@@ -1,0 +1,18 @@
+version: 1.0.{build}
+image: Visual Studio 2019
+configuration:
+- DEBUG
+- RELEASE
+build:
+  parallel: true
+  verbosity: minimal
+artifacts:
+- path: PhotoSift\bin\$(configuration)
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: [see https://www.appveyor.com/docs/deployment/github/#provider-settings]
+  draft: true
+  prerelease: true
+  on:
+    branch: master
