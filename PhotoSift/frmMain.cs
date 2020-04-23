@@ -24,6 +24,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
 
 namespace PhotoSift
 {
@@ -127,6 +129,23 @@ namespace PhotoSift
 			AddFiles( new string[] { @"D:\temp\icons temp\PicSort" } );
 			AddFiles( new string[] { @"D:\Temp\Comics" } );
 #endif
+			Core.Initialize();
+			var _libVLC = new LibVLC();
+			var _mediaPlayer = new MediaPlayer(_libVLC);
+			var _videoView = new VideoView();
+
+			_videoView.Location = new System.Drawing.Point(293, 113);
+			//this.videoView1.Name = "videoView1";
+			_videoView.Size = new System.Drawing.Size(75, 23);
+
+			//_videoView.Left = 0;
+			//_videoView.Top = 0;
+			//_videoView.Width = this.Width;
+			//_videoView.Height = this.Height;
+			_videoView.MediaPlayer = _mediaPlayer;
+			//_mediaPlayer.Play(new Media(_libVLC, "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_480_1_5MG.mp4", FromType.FromLocation));
+			_mediaPlayer.Play(new Media(_libVLC, @"", FromType.FromPath));
+
 		}
 
 		/// <summary>
