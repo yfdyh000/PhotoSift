@@ -94,11 +94,13 @@
 			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.picLogo = new System.Windows.Forms.PictureBox();
 			this.panelMain = new System.Windows.Forms.Panel();
+            this.wmpCurrent = new AxWMPLib.AxWindowsMediaPlayer();
 			this.timerMouseHider = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.picCurrent)).BeginInit();
 			this.menuStripMain.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
 			this.panelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wmpCurrent)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// timerAutoAdvance
@@ -656,7 +658,19 @@
 			this.panelMain.Size = new System.Drawing.Size(472, 292);
 			this.panelMain.TabIndex = 11;
 			this.panelMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelMain_MouseUp);
-			// 
+            // 
+            // wmpCurrent
+            // 
+            this.wmpCurrent.Enabled = true;
+            this.wmpCurrent.Location = new System.Drawing.Point(352, 36);
+            this.wmpCurrent.Name = "wmpCurrent";
+            this.wmpCurrent.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpCurrent.OcxState")));
+            this.wmpCurrent.Size = new System.Drawing.Size(75, 23);
+            this.wmpCurrent.TabIndex = 11;
+            this.wmpCurrent.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpCurrent_PlayStateChange);
+            this.wmpCurrent.KeyDownEvent += new AxWMPLib._WMPOCXEvents_KeyDownEventHandler(this.wmpCurrent_KeyDownEvent);
+            this.wmpCurrent.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.wmpCurrent_KeyUpEvent);
+            // 
 			// timerMouseHider
 			// 
 			this.timerMouseHider.Interval = 1000;
@@ -694,9 +708,10 @@
 			this.menuStripMain.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
 			this.panelMain.ResumeLayout(false);
-			this.panelMain.PerformLayout();
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this.panelMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wmpCurrent)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 
@@ -767,6 +782,7 @@
 		private System.Windows.Forms.ToolStripMenuItem mnuResetZoom;
 		private System.Windows.Forms.ToolStripMenuItem mnuResetViewMode;
 		private System.Windows.Forms.ToolStripMenuItem mnuRandimizeOrder;
+		private AxWMPLib.AxWindowsMediaPlayer wmpCurrent;
 	}
 }
 
