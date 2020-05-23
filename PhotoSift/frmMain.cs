@@ -240,14 +240,7 @@ namespace PhotoSift
 
 			lblStatus.Top = panelMain.ClientSize.Height - lblStatus.Height - 2;
 
-			if( settings.CustomMenuColors )
-			{
-				menuStripMain.Renderer = new CustomMenuRenderer( settings );
-			}
-			else
-			{
-				menuStripMain.Renderer = new EnhancedDefaultMenuRenderer();
-			}
+			menuStripMain.Renderer = new CustomMenuRenderer( settings );
 			panelMain.Refresh();
 		}
 
@@ -1433,41 +1426,44 @@ namespace PhotoSift
 		//		http://stackoverflow.com/questions/9260303/how-to-change-menu-hover-color-winforms
 		//		http://www.codeproject.com/Articles/70204/Custom-VisualStudio-2008-style-MenuStrip-and-ToolS
 		//		.NET ToolStrip Customizer: http://toolstripcustomizer.codeplex.com/
+		
+		// Enhanced to allow restore at runtime.
 
 		private class CustomMenuRenderer : ToolStripProfessionalRenderer
 		{
 			private AppSettings settings;
 			public CustomMenuRenderer( AppSettings s )
-				: base( new CustomMenuColorTable( s ) )
+				: base(s.CustomMenuColors ? new CustomMenuColorTable( s ) : new ProfessionalColorTable())
 			{
 				settings = s;
 			}
 
 			protected override void OnRenderItemText( ToolStripItemTextRenderEventArgs e )
 			{
-				e.Item.ForeColor = settings.CustomMenuColorText;
+				e.Item.ForeColor = settings.CustomMenuColors ? settings.CustomMenuColorText : DefaultForeColor;
 				base.OnRenderItemText( e );
 			}
 			protected override void OnRenderItemCheck( ToolStripItemImageRenderEventArgs e )
 			{
-				e.Graphics.DrawString( "ü", new Font( "Wingdings", e.ToolStrip.Font.Size + 4 ), new SolidBrush( settings.CustomMenuColorText ), e.ImageRectangle );	// draw a checkmark
+				if (settings.CustomMenuColors)
+					e.Graphics.DrawString( "ü", new Font( "Wingdings", e.ToolStrip.Font.Size + 4 ), new SolidBrush( settings.CustomMenuColorText ), e.ImageRectangle );	// draw a checkmark
+				else
+					base.OnRenderItemCheck(e);
 			}
 			protected override void OnRenderArrow( ToolStripArrowRenderEventArgs e )
 			{
-				e.ArrowColor = settings.CustomMenuColorText;
+				e.ArrowColor = settings.CustomMenuColors ? settings.CustomMenuColorText : DefaultForeColor;
 				base.OnRenderArrow( e );
 			}
 			protected override void OnRenderMenuItemBackground( ToolStripItemRenderEventArgs e )
 			{
 				base.OnRenderMenuItemBackground( e );
-				if( e.Item.Selected )
+				if (settings.CustomMenuColors && e.Item.Selected)
 				{
 					var rect = new Rectangle( 0, 0, e.Item.Width - 1, e.Item.Height - 1 );
 					if( e.Item.IsOnDropDown ) rect = new Rectangle( 2, 0, e.Item.Width - 4, e.Item.Height - 1 );
-					if( e.Item.Enabled )
-						e.Graphics.DrawRectangle( new Pen( settings.CustomMenuColorBorder ), rect );
-					else
-						e.Graphics.DrawRectangle( new Pen( settings.CustomMenuColorHightlight ), rect );
+                    Pen pen = new Pen(e.Item.Enabled ? settings.CustomMenuColorBorder : settings.CustomMenuColorHightlight);
+					e.Graphics.DrawRectangle(pen, rect);
 				}
 			}
 		}
@@ -1495,27 +1491,6 @@ namespace PhotoSift
 			public override Color MenuItemSelected { get { return settings.CustomMenuColorHightlight; } }
 			public override Color MenuItemSelectedGradientBegin { get { return settings.CustomMenuColorHightlight; } }
 			public override Color MenuItemSelectedGradientEnd { get { return settings.CustomMenuColorHightlight; } }
-		}
-		// --------------------------------------------------------------------
-
-		private class EnhancedDefaultMenuRenderer : ToolStripProfessionalRenderer
-		{
-			public EnhancedDefaultMenuRenderer() { }
-
-			protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
-			{
-				e.Item.ForeColor = DefaultForeColor;
-				base.OnRenderItemText(e);
-			}
-			protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
-			{
-				e.ArrowColor = DefaultForeColor;
-				base.OnRenderArrow(e);
-			}
-			protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-			{
-				base.OnRenderMenuItemBackground(e);
-			}
 		}
 
 		private void wmpCurrent_KeyUpEvent(object sender, AxWMPLib._WMPOCXEvents_KeyUpEvent e)
