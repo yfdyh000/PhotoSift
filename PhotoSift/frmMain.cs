@@ -244,11 +244,10 @@ namespace PhotoSift
 			{
 				menuStripMain.Renderer = new CustomMenuRenderer( settings );
 			}
-			/* todo: reset menu renderer
 			else
 			{
-				menuStripMain.Renderer = new ToolStripProfessionalRenderer();
-			}*/
+				menuStripMain.Renderer = new EnhancedDefaultMenuRenderer();
+			}
 			panelMain.Refresh();
 		}
 
@@ -1496,6 +1495,27 @@ namespace PhotoSift
 			public override Color MenuItemSelected { get { return settings.CustomMenuColorHightlight; } }
 			public override Color MenuItemSelectedGradientBegin { get { return settings.CustomMenuColorHightlight; } }
 			public override Color MenuItemSelectedGradientEnd { get { return settings.CustomMenuColorHightlight; } }
+		}
+		// --------------------------------------------------------------------
+
+		private class EnhancedDefaultMenuRenderer : ToolStripProfessionalRenderer
+		{
+			public EnhancedDefaultMenuRenderer() { }
+
+			protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+			{
+				e.Item.ForeColor = DefaultForeColor;
+				base.OnRenderItemText(e);
+			}
+			protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
+			{
+				e.ArrowColor = DefaultForeColor;
+				base.OnRenderArrow(e);
+			}
+			protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+			{
+				base.OnRenderMenuItemBackground(e);
+			}
 		}
 
 		private void wmpCurrent_KeyUpEvent(object sender, AxWMPLib._WMPOCXEvents_KeyUpEvent e)

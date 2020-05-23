@@ -149,7 +149,7 @@ namespace PhotoSift
 		[Category( "Appearance" ), DisplayName( "Transparent text labels" ), DescriptionAttribute( "Decides if text labels should have transparent or solid color background." )]
 		public bool ColorTransparentLabels { get; set; }
 
-		[Category( "Appearance" ), DisplayName( "Custom menu theme" ), DescriptionAttribute("Enables a custom menu theme, based on the four colors specified below. Disabling this option requires restarting this program to take effect.")]
+		[Category( "Appearance" ), DisplayName( "Custom menu theme" ), DescriptionAttribute("Enables a custom menu theme, based on the four colors specified below.")]
 		public bool CustomMenuColors { get; set; }
 		[XmlIgnore]
 		[Category( "Appearance" ), DisplayName( "Custom menu theme: Background" ), DescriptionAttribute( "Background color" )]
